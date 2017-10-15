@@ -23,7 +23,7 @@ public class SetupPasswordDialog extends Dialog implements View.OnClickListener 
     public  EditText mAffirmET;
     private  MyCallBack myCallBack;
 //。。。
-
+//。。。
 
 
     @Override
