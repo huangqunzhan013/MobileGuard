@@ -24,7 +24,7 @@ public class SetupPasswordDialog extends Dialog implements View.OnClickListener 
     private  MyCallBack myCallBack;
 //。。。
 //。。。
-
+//。。。
 
     @Override
     protected  void onCreate(Bundle savedInstanceState){
