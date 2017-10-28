@@ -1,5 +1,6 @@
 package cn.edu.gdmec.android.mobileguard.m2theftguard.receiver;
 
+
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
@@ -15,13 +16,10 @@ import android.util.Log;
 import cn.edu.gdmec.android.mobileguard.R;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.service.GPSLocationService;
 
-import static android.content.ContentValues.TAG;
-
 /**
- * Created by Lenovo on 2017/10/27.
+ * Created by Lee on 2017/10/24.
  */
-
-public class SmsLostFindReceiver extends BroadcastReceiver {
+public class SmsLostFindReceiver extends BroadcastReceiver{
     private static final String TAG = SmsLostFindReceiver.class.getSimpleName();
     private SharedPreferences sharedPreferences;
     private ComponentName componentName;
@@ -32,17 +30,15 @@ public class SmsLostFindReceiver extends BroadcastReceiver {
         if(protecting){
             DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
             Object[] objs = (Object[]) intent.getExtras().get("pdus");
-            for (Object obj : objs){
-                SmsMessage smsMessage = SmsMessage.createFromPdu((byte[])obj);
+            for(Object obj : objs){
+                SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) obj);
                 String sender = smsMessage.getOriginatingAddress();
                 if(sender.startsWith("+86")){
                     sender = sender.substring(3,sender.length());
                 }
-                //获取短信正文
                 String body = smsMessage.getMessageBody();
                 String safephone = sharedPreferences.getString("safephone",null);
-                //如果短信时安全号码发送的
-                if(!TextUtils.isEmpty(safephone)&sender.equals(safephone)){
+                if(!TextUtils.isEmpty(safephone) & sender.equals(safephone)){
                     if("#*location*#".equals(body)){
                         Log.i(TAG,"返回位置信息.");
                         Intent service = new Intent(context, GPSLocationService.class);
@@ -50,15 +46,11 @@ public class SmsLostFindReceiver extends BroadcastReceiver {
                         abortBroadcast();
                     }else if("#*alarm*#".equals(body)){
                         Log.i(TAG,"播放报警音乐.");
-                            MediaPlayer player = MediaPlayer.create(context,R.raw.ylzs );
-                            player.setVolume(1.0f,1.0f);
-                            player.start();
-                            abortBroadcast();
-                        }else if("#*wipedata*#".equals(body)){
-                        Log.i(TAG,"远程清除数据");
-                        dpm.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
+                        MediaPlayer player = MediaPlayer.create(context, R.raw.ylzs);
+                        player.setVolume(1.0f, 1.0f);
+                        player.start();
                         abortBroadcast();
-                    }else if("#*lockScreen*#".equals(body)){
+                    }else if("#*wipedata*#".equals(body)){
                         Log.i(TAG,"远程清除数据.");
                         dpm.wipeData(DevicePolicyManager.WIPE_EXTERNAL_STORAGE);
                         abortBroadcast();
@@ -71,5 +63,6 @@ public class SmsLostFindReceiver extends BroadcastReceiver {
                 }
             }
         }
+
     }
 }

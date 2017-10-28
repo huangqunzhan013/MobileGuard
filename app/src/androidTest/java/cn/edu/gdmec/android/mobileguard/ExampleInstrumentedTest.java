@@ -276,7 +276,7 @@ public class ExampleInstrumentedTest {
         assertEquals("security contact phonenumber",str,"1 376-079-5885");
     }
 
-    //@Test
+    @Test
     public void t09ConfirmDeviceAdmin() throws UiObjectNotFoundException {
         UiObject result = mDevice.findObject(new UiSelector().textStartsWith("激活此设备管理员"));
         String str = result.getText();

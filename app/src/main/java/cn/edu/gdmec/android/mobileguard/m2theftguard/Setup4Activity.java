@@ -29,12 +29,11 @@ public class Setup4Activity extends BaseSetupActivity {
         mStatusTV = (TextView) findViewById(R.id.tv_setup4_status);
         mToggleButton = (ToggleButton) findViewById(R.id.togglebtn_securityfunction);
         mToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked){
+                if (isChecked){
                     mStatusTV.setText("防盗保护已经开启");
-                }else {
+                }else{
                     mStatusTV.setText("防盗保护没有开启");
                 }
                 SharedPreferences.Editor editor = sp.edit();
@@ -42,29 +41,26 @@ public class Setup4Activity extends BaseSetupActivity {
                 editor.commit();
             }
         });
-
         boolean protecting = sp.getBoolean("protecting",true);
-        if(protecting){
+        if (protecting){
             mStatusTV.setText("防盗保护已经开启");
             mToggleButton.setChecked(true);
-        }else {
+        }else{
             mStatusTV.setText("防盗保护没有开启");
             mToggleButton.setChecked(false);
         }
-
     }
 
     @Override
-    public void showNext() {
-        //跳转至防盗保护页面
-        SharedPreferences.Editor editor = sp.edit();
+    public void showNext(){
+        SharedPreferences.Editor editor=sp.edit();
         editor.putBoolean("isSetUp",true);
         editor.commit();
         startActivityAndFinishSelf(LostFindActivity.class);
     }
 
     @Override
-    public void showPre() {
+    public void showPre(){
         startActivityAndFinishSelf(Setup3Activity.class);
     }
 }
