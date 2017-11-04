@@ -3,5 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--手机防盗-->
     <color name="purple">#5542BB</color>
+    <!--手机通讯-->
+    <color name="bright_purple">#C218D9</color>
+    <color name="light_gary">#D1D0CE</color>
 </resources>

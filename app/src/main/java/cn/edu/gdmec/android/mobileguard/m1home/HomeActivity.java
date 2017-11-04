@@ -14,7 +14,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import android.text.TextUtils;
-
+import cn.edu.gdmec.android.mobileguard.m3communicationguard.SecurityPhoneActivity;
 import cn.edu.gdmec.android.mobileguard.R;
 import cn.edu.gdmec.android.mobileguard.m1home.adapter.HomeAdapter;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.LostFindActivity;
@@ -22,6 +22,7 @@ import cn.edu.gdmec.android.mobileguard.m2theftguard.dialog.InterPasswordDialog;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.dialog.SetupPasswordDialog;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.receiver.MyDeviceAdminReceiver;
 import cn.edu.gdmec.android.mobileguard.m2theftguard.utils.MD5Utils;
+import cn.edu.gdmec.android.mobileguard.m3communicationguard.SecurityPhoneActivity;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -54,6 +55,9 @@ public class HomeActivity extends AppCompatActivity {
                             showSetUpPswdDialog();
                         }
                         break;
+                    case 1:
+                        startActivity(SecurityPhoneActivity.class);
+
                 }
             }
         });

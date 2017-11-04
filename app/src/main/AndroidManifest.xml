@@ -11,6 +11,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
 
     <application
         android:name=".App"
@@ -34,6 +37,8 @@
         <activity android:name=".m2theftguard.Setup2Activity" />
         <activity android:name=".m2theftguard.Setup3Activity" />
         <activity android:name=".m2theftguard.Setup4Activity" />
+
+
 
         <receiver
             android:name=".m2theftguard.receiver.BootCompleteReceiver"
@@ -68,6 +73,27 @@
             </intent-filter>
 
         </receiver>
+
+
+        <activity android:name=".m3communicationguard.SecurityPhoneActivity"/>
+        <activity android:name=".m3communicationguard.AddBlackNumberActivity"/>
+        <receiver
+            android:name=".m3communicationguard.receiver.InterceptCallReciever"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.PHONE_STATE"/>
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".m3communicationguard.receiver.InterceptSmsReciever"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+
 
     </application>
 
