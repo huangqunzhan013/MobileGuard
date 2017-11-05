@@ -103,7 +103,7 @@ public class SecurityPhoneActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-    }
+    }//。。
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
