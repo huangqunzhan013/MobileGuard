@@ -88,6 +88,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_app_manager);
         receciver = new UninstallRececiver();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_PACKAGE_REMOVED);
