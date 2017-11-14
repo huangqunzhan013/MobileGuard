@@ -41,6 +41,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
     private AppManagerAdapter adapter;
     private TextView mAppNumTV;
     private TextView mAppAboutTV;
+    private TextView mAppActivityTV;
     private UninstallRececiver receciver;
 
     private Handler mHandler = new Handler(){
@@ -107,6 +108,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         mAppNumTV = (TextView) findViewById(R.id.tv_appnumber);
         mListView = (ListView) findViewById(R.id.lv_appmanager);
         mAppAboutTV = (TextView) findViewById(R.id.tv_about_app);
+        mAppActivityTV= (TextView) findViewById(R.id.tv_activity_app);
         getMemoryFromPhone();
         initData();
         initListener();

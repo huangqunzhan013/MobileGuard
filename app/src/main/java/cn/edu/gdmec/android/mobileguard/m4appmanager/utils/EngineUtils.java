@@ -69,4 +69,19 @@ public class EngineUtils {
         }).create();
         builder.show();
     }
+
+    //应用活动
+    public static void appActivity(Context context,AppInfo appInfo){
+        AlertDialog.Builder builder=new AlertDialog.Builder(context);
+        builder.setTitle("Activity");
+        builder.setMessage(appInfo.appActivity);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        }).create();
+        builder.show();
+    }
+
 }

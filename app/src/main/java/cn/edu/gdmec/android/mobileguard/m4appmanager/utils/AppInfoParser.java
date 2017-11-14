@@ -2,6 +2,7 @@ package cn.edu.gdmec.android.mobileguard.m4appmanager.utils;
 
 import android.app.backup.BackupDataInputStream;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -69,6 +70,18 @@ public class AppInfoParser {
                     }
                 }
             } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            PackageInfo packageInfo2=null;
+            try {
+              packageInfo2=pm.getPackageInfo(packname,PackageManager.GET_ACTIVITIES);
+                ActivityInfo[] appact=packageInfo2.activities;
+                List<ActivityInfo> a=new ArrayList<>();
+                    for (ActivityInfo pack:appact){
+                        a.add(pack);
+                        appinfo.appActivity=a.toString();
+                    }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
