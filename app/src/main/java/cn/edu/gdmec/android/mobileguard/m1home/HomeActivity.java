@@ -48,18 +48,16 @@ public class HomeActivity extends AppCompatActivity {
         gv_home.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.print(i);
-                switch (i) {
+                switch(i){
                     case 0:
-                        if (isSetUpPassword()) {
+                        if(isSetUpPassword()){
                             showInterPswdDialog();
-                        } else {
+                        }else{
                             showSetUpPswdDialog();
                         }
                         break;
                     case 1:
-                        //startActivity(SecurityPhoneActivity.class);
-                        Intent intent=new Intent(HomeActivity.this,SecurityPhoneActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, SecurityPhoneActivity.class);
                         startActivity(intent);
                         break;
                     case 2:
@@ -68,7 +66,6 @@ public class HomeActivity extends AppCompatActivity {
                     case 3:
                         startActivity(VirusScanActivity.class);
                         break;
-
                 }
             }
         });
