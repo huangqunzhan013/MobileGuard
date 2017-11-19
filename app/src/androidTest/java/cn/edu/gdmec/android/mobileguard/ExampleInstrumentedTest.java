@@ -389,7 +389,7 @@ public class ExampleInstrumentedTest {
             throw new Exception("Blacklist can't be scrolled to load more items.");
         }
     }
-    @Test
+    //@Test
     public void t16AppManager() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("激活此设备管理员"));
         result.clickAndWaitForNewWindow();
@@ -404,7 +404,7 @@ public class ExampleInstrumentedTest {
             throw new Exception("AppManager can't startup app .");
         }
     }
-    @Test
+    //@Test
     public void t17AppManagerAboutButton() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
@@ -416,7 +416,7 @@ public class ExampleInstrumentedTest {
         }
     }
 
-    @Test
+    //@Test
     public void t18AppManagerAboutVersion() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
@@ -430,7 +430,7 @@ public class ExampleInstrumentedTest {
         }
     }
 
-    @Test
+    //@Test
     public void t19AppManagerAboutVersion() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
@@ -443,7 +443,7 @@ public class ExampleInstrumentedTest {
             throw new Exception("Can't get app signature issuer message.");
         }
     }
-    @Test
+   // @Test
     public void t20AppManagerAboutVersion() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
@@ -454,6 +454,46 @@ public class ExampleInstrumentedTest {
         result = mDevice.findObject(new UiSelector().textContains("android.permission"));
         if(!result.exists()){
             throw new Exception("Can't get app request permissions.");
+        }
+    }
+    @Test
+    public void t21VirusScan() throws Exception {
+        result = mDevice.findObject(new UiSelector().textStartsWith("激活此设备管理员"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("手机杀毒"));
+        result.clickAndWaitForNewWindow();
+        UiObject result = mDevice.findObject(new UiSelector().textStartsWith("暂不升级"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("病毒查杀"));
+        if(!result.exists()){
+            throw new Exception("Can't open VirusScan Activity.");
+        }
+    }
+    @Test
+    public void t22VirusDbUpdate() throws Exception {
+        result = mDevice.findObject(new UiSelector().textStartsWith("手机杀毒"));
+        result.clickAndWaitForNewWindow();
+        UiObject result = mDevice.findObject(new UiSelector().textStartsWith("立刻升级"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textContains("2017.1.1"));
+        if(!result.exists()){
+            throw new Exception("Can't update Virus Database.");
+        }
+    }
+
+    @Test
+    public void t23StopAndRestartScan() throws Exception {
+        result = mDevice.findObject(new UiSelector().textStartsWith("手机杀毒"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("全盘扫描"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().className("android.widget.Button"));
+        result.clickAndWaitForNewWindow();
+        UiScrollable  appList = new UiScrollable(new UiSelector().className("android.widget.ListView"));
+        appList.flingToBeginning(5);
+        UiObject result = appList.getChildByText(new UiSelector().className("android.widget.TextView"),"App1(课程测试案例)",true);
+        if(!result.exists()){
+            throw new Exception("Can't find virus.");
         }
     }
 }

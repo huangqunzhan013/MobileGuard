@@ -81,27 +81,29 @@ public class VirusScanActivity extends AppCompatActivity implements View.OnClick
         new Thread(){
             public void run(){
                 try{
-                    File file=new File(getFilesDir(),dbname);
-                    if (file.exists()&&file.length()>0){
-                        Log.i("VirusScanActivity","数据库已存在");
+                    File file = new File(getFilesDir(),dbname);
+                    if(file.exists()&&file.length()>0&&fromPath.equals("")){
+                        Log.i("VirusScanActivity","数据库已存在！");
                         handler.sendEmptyMessage(0);
                         return;
                     }
-                    InputStream is=getAssets().open(dbname);
+                    InputStream is = getAssets().open(dbname);
                     if (fromPath.equals("")){
-                        is=getAssets().open(dbname);
-                    }else {
-                        file=new File(fromPath,"antivirus.db");
-                        is=new FileInputStream(file);
+                        is = getAssets().open(dbname);
+                    }else{
+                        file = new File(fromPath,
+                                "antivirus.db");
+                        is= new FileInputStream(file);
                     }
-                    FileOutputStream fos=openFileOutput(dbname,MODE_PRIVATE);
-                    byte[] buffer=new byte[1024];
-                    int len=0;
-                    while ((len=is.read(buffer))!=-1){
+                    FileOutputStream fos = openFileOutput(dbname,MODE_PRIVATE);
+                    byte[] buffer = new byte[1024];
+                    int len = 0;
+                    while((len = is.read(buffer))!=-1){
                         fos.write(buffer,0,len);
                     }
                     is.close();
                     fos.close();
+                    handler.sendEmptyMessage(0);
                 }catch (Exception e){
                     e.printStackTrace();
                 }

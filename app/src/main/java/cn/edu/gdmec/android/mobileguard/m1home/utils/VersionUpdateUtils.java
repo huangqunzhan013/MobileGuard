@@ -3,6 +3,7 @@ package cn.edu.gdmec.android.mobileguard.m1home.utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,25 +29,21 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 import cn.edu.gdmec.android.mobileguard.R;
-import cn.edu.gdmec.android.mobileguard.m1home.HomeActivity;
+//import cn.edu.gdmec.android.mobileguard.m1home.HomeActivity;
 import cn.edu.gdmec.android.mobileguard.m1home.entity.VersionEntity;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
-/**
- * Created by Lenovo on 2017/9/16.
- */
 
 public class VersionUpdateUtils {
     private String mVersion;
     private Activity context;
     private VersionEntity versionEntity;
-    //广播
+    //广播者
     private BroadcastReceiver broadcastReceiver;
-    //暂不升级跳到下一个activity
-    private Class<?> nextAcivity;
+    //暂不升级跳的下个Activity
+    private Class<?> nextActivity;
     //回调
     private DownloadCallback downloadCallback;
     private long downloadId;
@@ -56,25 +53,28 @@ public class VersionUpdateUtils {
     private static final int MESSAGE_SHOW_DIALOG = 104;
     private static final int MESSAGE_ENTERHOME = 105;
 
-    private Handler handler = new Handler() {
+    private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
+            switch (msg.what){
                 case MESSAGE_IO_ERROR:
-                    Toast.makeText(context, "IO错误", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"IO异常",Toast.LENGTH_LONG).show();
+                    enterHome();
                     break;
                 case MESSAGE_JSON_ERROR:
-                    Toast.makeText(context, "JSON解析错误", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"JSON异常",Toast.LENGTH_LONG).show();
+                    enterHome();
                     break;
                 case MESSAGE_SHOW_DIALOG:
                     showUpdateDialog(versionEntity);
                     break;
                 case MESSAGE_ENTERHOME:
-                   // Intent intent = new Intent(context, HomeActivity.class);
-                   // context.startActivity(intent);
-                   // context.finish();
-                    if (nextAcivity!=null){
-                        Intent intent=new Intent(context,nextAcivity);
+                    //HomeActivity.class，新改动
+                    //Intent intent = new Intent(context, nextActivity);
+                    //context.startActivity(intent);
+                    //context.finish();
+                    if(nextActivity!=null) {
+                        Intent intent = new Intent(context, nextActivity);
                         context.startActivity(intent);
                         context.finish();
                     }
@@ -86,16 +86,18 @@ public class VersionUpdateUtils {
     public VersionUpdateUtils(String mVersion, Activity context,DownloadCallback downloadCallback,Class<?> nextActivity) {
         this.mVersion = mVersion;
         this.context = context;
-        this.nextAcivity=nextActivity;
-        this.downloadCallback=downloadCallback;
+        //新改动，构造参数
+        this.nextActivity = nextActivity;
+        //构造参数
+        this.downloadCallback = downloadCallback;
     }
-
-    public void getCloudVersion(String url) {
+    public void getCloudVersion(String url){
         try {
             HttpClient httpClient = new DefaultHttpClient();
             HttpConnectionParams.setConnectionTimeout(httpClient.getParams(), 5000);
             HttpConnectionParams.setSoTimeout(httpClient.getParams(), 5000);
-            //HttpGet httpGet = new HttpGet("http://android2017.duapp.com/updateinfo.html");
+            //"http://android2017.duapp.com/updateinfo.html"
+            //新改动
             HttpGet httpGet = new HttpGet(url);
             HttpResponse execute = httpClient.execute(httpGet);
             if (execute.getStatusLine().getStatusCode() == 200) {
@@ -107,50 +109,42 @@ public class VersionUpdateUtils {
                 versionEntity.description = jsonObject.getString("des");
                 versionEntity.apkurl = jsonObject.getString("apkurl");
                 if (!mVersion.equals(versionEntity.versionCode)) {
-                    //  System.out.println(versionEntity.description);
-                    //  DownloadUtils downloadUtils = new DownloadUtils();
-                    //  downloadUtils.downloadApk(versionEntity.apkurl,"mobileguard.apk",context);
                     handler.sendEmptyMessage(MESSAGE_SHOW_DIALOG);
                 }
             }
-        } catch (IOException e) {
+        }catch (IOException e){
             handler.sendEmptyMessage(MESSAGE_IO_ERROR);
-            e.printStackTrace();
-        } catch (JSONException e) {
+        }catch (JSONException e){
             handler.sendEmptyMessage(MESSAGE_JSON_ERROR);
-            e.printStackTrace();
         }
     }
-
-    private void showUpdateDialog(final VersionEntity versionEntity) {
+    private void showUpdateDialog(final VersionEntity versionEntity){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("检查到有新版本：" + versionEntity.versionCode);
+        builder.setTitle("检查到新版本："+versionEntity.versionCode);
         builder.setMessage(versionEntity.description);
         builder.setCancelable(false);
         builder.setIcon(R.mipmap.ic_launcher_round);
-        builder.setPositiveButton("立即升级", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("立刻升级", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 downloadNewApk(versionEntity.apkurl);
                 enterHome();
             }
         });
-        builder.setNegativeButton("暂不升级",new DialogInterface.OnClickListener(){
-           @Override
-            public void onClick(DialogInterface dialogInterface,int i){
-               dialogInterface.dismiss();
-               enterHome();
-           }
+        builder.setNegativeButton("暂不升级", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                enterHome();
+            }
         });
         builder.show();
     }
     private void enterHome(){
-        handler.sendEmptyMessage(MESSAGE_ENTERHOME);
+        handler.sendEmptyMessageDelayed(MESSAGE_ENTERHOME,2000);
     }
-
     private void downloadNewApk(String apkurl){
         DownloadUtils downloadUtils = new DownloadUtils();
-        //downloadUtils.downloadApk(apkurl,"mobileguard.apk",context);
         String filename = "downloadfile";
         String suffixes="avi|mpeg|3gp|mp3|mp4|wav|jpeg|gif|jpg|png|apk|exe|pdf|rar|zip|docx|doc|apk|db";
         Pattern pat= Pattern.compile("[\\w]+[\\.]("+suffixes+")");
@@ -159,6 +153,8 @@ public class VersionUpdateUtils {
             filename = mc.group();
         }
         downapk(apkurl, filename, context);
+        //antivirus.db
+        //downloadUtils.downloadApk(apkurl,"mobileguard.apk",context);
     }
     public void downapk(String url,String targetFile,Context context){
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
@@ -173,6 +169,7 @@ public class VersionUpdateUtils {
         downloadId = downloadManager.enqueue(request);
         listener(downloadId,targetFile);
     }
+
     private void listener(final long Id,final String filename) {
         IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         broadcastReceiver = new BroadcastReceiver() {
