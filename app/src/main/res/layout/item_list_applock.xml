@@ -9,7 +9,7 @@
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_margin="50dp"/>
+        android:layout_margin="5dp"/>
     <TextView
         android:id="@+id/tv_appname"
         style="@style/textview16sp"
