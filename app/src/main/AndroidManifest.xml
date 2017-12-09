@@ -105,7 +105,18 @@
         <activity android:name=".m6cleancache.CacheClearListActivity"/>
         <activity android:name=".m6cleancache.CleanCacheActivity"/>
 
+        <service
+            android:name=".m8trafficmonitor.service.TrafficMonitoringService"
+            android:enabled="true"
+            android:exported="true" />
 
+        <receiver
+            android:name=".m8trafficmonitor.reciever.BootCompleteReciever"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".m8trafficmonitor.OperatorSetActivity" />
+        <activity android:name=".m8trafficmonitor.TrafficMonitoringActivity"/>
 
     </application>
 
