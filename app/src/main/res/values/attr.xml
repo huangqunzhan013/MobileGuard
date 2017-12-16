@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AdvancedToolsView">
+        <attr name="desc" format="string"></attr>
+        <attr name="android:src"></attr>
+    </declare-styleable>
+</resources>
