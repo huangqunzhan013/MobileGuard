@@ -1,4 +1,5 @@
 package cn.edu.gdmec.android.mobileguard;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -47,7 +49,7 @@ public class ExampleInstrumentedTest {
     private String str,str1,str2;
     private UiObject result;
     @Before
-    public void startMainActivityFromHomeScreen() {
+    public void startMainActivityFromHomeScreen()  {
         // 初始化 UiDevice 实例
         mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
 
@@ -62,6 +64,7 @@ public class ExampleInstrumentedTest {
 
         // 启动应用
         Context context = InstrumentationRegistry.getContext();
+
         final Intent intent = context.getPackageManager()
                 .getLaunchIntentForPackage(BASIC_SAMPLE_PACKAGE);
         // 开始新的acivity，移除以前的所有实例
@@ -332,7 +335,9 @@ public class ExampleInstrumentedTest {
     }
     //@Test
     public void t12CommunicationGuardWithoutTitleBar() throws Exception {
-        UiObject result = mDevice.findObject(new UiSelector().textStartsWith("通讯卫士"));
+        result = mDevice.findObject(new UiSelector().textStartsWith("激活此设备管理员"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("通讯卫士"));
         result.clickAndWaitForNewWindow();
         result = mDevice.findObject(new UiSelector().textStartsWith("MobileGuard"));
         if(result.exists()){
@@ -397,7 +402,7 @@ public class ExampleInstrumentedTest {
         result.clickAndWaitForNewWindow();
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
-        result = mDevice.findObject(new UiSelector().textStartsWith("MobileGuard"));
+        result = mDevice.findObject(new UiSelector().textStartsWith("App1"));
         result.clickAndWaitForNewWindow();
         result = mDevice.findObject(new UiSelector().textStartsWith("启动"));
         result.clickAndWaitForNewWindow();
@@ -410,7 +415,7 @@ public class ExampleInstrumentedTest {
     public void t17AppManagerAboutButton() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
-        result = mDevice.findObject(new UiSelector().textStartsWith("MobileGuard"));
+        result = mDevice.findObject(new UiSelector().textStartsWith("App1"));
         result.clickAndWaitForNewWindow();
         result = mDevice.findObject(new UiSelector().textStartsWith("关于"));
         if(!result.exists()){
@@ -422,7 +427,7 @@ public class ExampleInstrumentedTest {
     public void t18AppManagerAboutVersion() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
-        result = mDevice.findObject(new UiSelector().textStartsWith("MobileGuard"));
+        result = mDevice.findObject(new UiSelector().textStartsWith("App1"));
         result.clickAndWaitForNewWindow();
         result = mDevice.findObject(new UiSelector().textStartsWith("关于"));
         result.clickAndWaitForNewWindow();
@@ -436,7 +441,7 @@ public class ExampleInstrumentedTest {
     public void t19AppManagerAboutVersion() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
-        result = mDevice.findObject(new UiSelector().textStartsWith("MobileGuard"));
+        result = mDevice.findObject(new UiSelector().textStartsWith("App1"));
         result.clickAndWaitForNewWindow();
         result = mDevice.findObject(new UiSelector().textStartsWith("关于"));
         result.clickAndWaitForNewWindow();
@@ -445,11 +450,11 @@ public class ExampleInstrumentedTest {
             throw new Exception("Can't get app signature issuer message.");
         }
     }
-   // @Test
+    //@Test
     public void t20AppManagerAboutVersion() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("软件管家"));
         result.clickAndWaitForNewWindow();
-        result = mDevice.findObject(new UiSelector().textStartsWith("MobileGuard"));
+        result = mDevice.findObject(new UiSelector().textStartsWith("App1"));
         result.clickAndWaitForNewWindow();
         result = mDevice.findObject(new UiSelector().textStartsWith("关于"));
         result.clickAndWaitForNewWindow();
@@ -492,12 +497,13 @@ public class ExampleInstrumentedTest {
         result = mDevice.findObject(new UiSelector().className("android.widget.Button"));
         result.clickAndWaitForNewWindow();
         UiScrollable  appList = new UiScrollable(new UiSelector().className("android.widget.ListView"));
-        appList.flingToBeginning(10);
+        appList.flingToBeginning(5);
         UiObject result = appList.getChildByText(new UiSelector().className("android.widget.TextView"),"App1(课程测试案例)",true);
         if(!result.exists()){
             throw new Exception("Can't find virus.");
         }
     }
+
     //@Test
     public void t24EnterCleanCache() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("激活此设备管理员"));
@@ -683,7 +689,7 @@ public class ExampleInstrumentedTest {
             throw new Exception("Can't remove App lock.");
         }
     }
-    @Test
+    //@Test
     public void t36LockApp1() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("暂不升级"));
         result.clickAndWaitForNewWindow();
@@ -778,7 +784,7 @@ public class ExampleInstrumentedTest {
             throw new Exception("Can't find App lock.");
         }
     }
-    //@Test
+    @Test
     public void t38AppManagerActivities() throws Exception {
         result = mDevice.findObject(new UiSelector().textStartsWith("暂不升级"));
         result.clickAndWaitForNewWindow();
@@ -794,5 +800,53 @@ public class ExampleInstrumentedTest {
         if(!result.exists()){
             throw new Exception("Can't get Activities.");
         }
+    }
+    //@Test
+    public void t39CloudScanVirus() throws Exception {
+        result = mDevice.findObject(new UiSelector().textStartsWith("暂不升级"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("手机杀毒"));
+        result.clickAndWaitForNewWindow();
+        sleep(1000);
+        result = mDevice.findObject(new UiSelector().textStartsWith("暂不升级"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("云查杀"));
+        result.clickAndWaitForNewWindow();
+        //result = mDevice.findObject(new UiSelector().className("android.widget.Button"));
+        //result.clickAndWaitForNewWindow();
+        UiScrollable  appList = new UiScrollable(new UiSelector().className("android.widget.ListView"));
+        appList.flingToBeginning(30);
+        UiObject result = appList.getChildByText(new UiSelector().className("android.widget.TextView"),"App2(fake virus.)",true);
+        if(!result.exists()){
+            throw new Exception("Can't find cloud scan virus.");
+        }
+    }
+    //@Test
+    public void t40CorrectFlowChinaUnicom() throws Exception {
+        result = mDevice.findObject(new UiSelector().textStartsWith("暂不升级"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("流量统计"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textStartsWith("流量监控"));
+        Rect viewRect = result.getBounds();//获取坐标
+        int x = viewRect.centerX();
+        int y = viewRect.centerY();
+        System.out.println(x+":"+y);
+        mDevice.click(445,y);
+        sleep(500);
+        result = mDevice.findObject(new UiSelector().className("android.widget.Spinner"));
+        result.click();
+        result = mDevice.findObject(new UiSelector().textStartsWith("中国联通"));
+        result.click();
+        result = mDevice.findObject(new UiSelector().className("android.widget.Button"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().className("android.widget.Button"));
+        result.clickAndWaitForNewWindow();
+        result = mDevice.findObject(new UiSelector().textContains("10010"));
+        if(!result.exists()){
+            throw new Exception("Can't correct flow.");
+        }
+        result = mDevice.findObject(new UiSelector().textStartsWith("取消"));
+        result.clickAndWaitForNewWindow();
     }
 }
